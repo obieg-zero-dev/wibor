@@ -2,7 +2,7 @@ name: Update WIBOR rates
 
 on:
   schedule:
-    - cron: '30 16 * * 1-5' # pon-pt 16:30 UTC (po fixingu)
+    - cron: '0 23 * * 1-5' # pon-pt 23:00 UTC (GPW Benchmark aktualizuje o 23:00)
   workflow_dispatch: # ręczne uruchomienie
 
 permissions:
@@ -11,26 +11,12 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
 
-      - name: Debug Stooq response
-        run: |
-          URL="https://stooq.com/q/d/l/?s=plopln1m&d1=20260325&d2=20260402&i=d"
-          echo "URL: $URL"
-          echo "--- HEADERS ---"
-          curl -sD- -o /tmp/body -A "Mozilla/5.0 (compatible; wibor-bot/1.0)" "$URL"
-          echo "--- BODY (first 500 bytes) ---"
-          head -c 500 /tmp/body
-          echo ""
-          echo "--- BODY SIZE ---"
-          wc -c < /tmp/body
-
-      - name: Fetch WIBOR from Stooq
+      - name: Fetch WIBOR from GPW Benchmark
         run: bash fetch.sh
 
       - name: Commit if changed
