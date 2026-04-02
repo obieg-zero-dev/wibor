@@ -18,6 +18,12 @@ jobs:
         with:
           persist-credentials: true
 
+      - name: Debug Stooq response
+        run: |
+          URL="https://stooq.com/q/d/l/?s=plopln1m&d1=20260325&d2=20260402&i=d"
+          echo "URL: $URL"
+          curl -sv -A "Mozilla/5.0 (compatible; wibor-bot/1.0)" "$URL" 2>&1 | head -50
+
       - name: Fetch WIBOR from Stooq
         run: bash fetch.sh
 
