@@ -11,8 +11,12 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Fetch WIBOR from Stooq
         run: bash fetch.sh
